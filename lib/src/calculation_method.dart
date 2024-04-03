@@ -45,6 +45,14 @@ enum CalculationMethod {
   /// Uses a Fajr angle of 20 and an Isha angle of 18
   singapore,
 
+  /// Indonesia
+  /// Uses a Fajr angle of 20 and an Isha angle of 18
+  indonesia,
+
+  /// Malaysia
+  /// Uses a Fajr angle of 20 and an Isha angle of 18
+  malaysia,
+
   /// Dianet
   turkey,
 
@@ -119,6 +127,8 @@ extension CalculationMethodExtensions on CalculationMethod {
           return CalculationParameters(
               fajrAngle: 18.0, ishaInterval: 90, method: this);
         }
+      case CalculationMethod.indonesia:
+      case CalculationMethod.malaysia:
       case CalculationMethod.singapore:
         {
           return CalculationParameters(

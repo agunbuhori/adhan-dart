@@ -17,6 +17,9 @@ class PrayerTimes {
   late DateTime _sunrise;
   DateTime get sunrise => _sunrise;
 
+  late DateTime _shuruq;
+  DateTime get shuruq => _shuruq;
+
   late DateTime _dhuhr;
   DateTime get dhuhr => _dhuhr;
 
@@ -28,6 +31,9 @@ class PrayerTimes {
 
   late DateTime _isha;
   DateTime get isha => _isha;
+
+  late DateTime _ishaRamadhan;
+  DateTime get ishaRamadhan => _ishaRamadhan;
 
   // If you give a UTC Offset then Prayer Times will convert local(with device timezone) time
   // to UTC and then add the offset.
@@ -239,6 +245,11 @@ class PrayerTimes {
         .add(Duration(minutes: calculationParameters.adjustments.sunrise))
         .add(Duration(minutes: calculationParameters.methodAdjustments.sunrise))
         .toLocal());
+    _shuruq = CalendarUtil.roundedMinute(tempSunrise
+        .add(Duration(minutes: calculationParameters.adjustments.sunrise))
+        .add(Duration(minutes: calculationParameters.methodAdjustments.sunrise))
+        .add(Duration(minutes: 15))
+        .toLocal());
     _dhuhr = CalendarUtil.roundedMinute(tempDhuhr
         .add(Duration(minutes: calculationParameters.adjustments.dhuhr))
         .add(Duration(minutes: calculationParameters.methodAdjustments.dhuhr))
@@ -255,14 +266,21 @@ class PrayerTimes {
         .add(Duration(minutes: calculationParameters.adjustments.isha))
         .add(Duration(minutes: calculationParameters.methodAdjustments.isha))
         .toLocal());
+    _ishaRamadhan = CalendarUtil.roundedMinute(tempMaghrib
+        .add(Duration(minutes: calculationParameters.adjustments.maghrib))
+        .add(Duration(minutes: calculationParameters.methodAdjustments.maghrib))
+        .add(Duration(hours: 2))
+        .toLocal());
 
     if (utcOffset != null) {
       _fajr = fajr.toUtc().add(utcOffset!);
       _sunrise = sunrise.toUtc().add(utcOffset!);
+      _shuruq = shuruq.toUtc().add(utcOffset!);
       _dhuhr = dhuhr.toUtc().add(utcOffset!);
       _asr = asr.toUtc().add(utcOffset!);
       _maghrib = maghrib.toUtc().add(utcOffset!);
       _isha = isha.toUtc().add(utcOffset!);
+      _ishaRamadhan = ishaRamadhan.toUtc().add(utcOffset!);
     }
   }
 
