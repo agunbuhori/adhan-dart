@@ -19,6 +19,7 @@ enum CalculationMethod {
   /// Uses a Fajr angle of 18.5 and an Isha angle of 90. Note: You should add a +30 minute custom
   /// adjustment of Isha during Ramadan.
   umm_al_qura,
+  umm_al_qura_ramadhan,
 
   /// The Gulf Region
   /// Uses Fajr and Isha angles of 18.2 degrees.
@@ -91,6 +92,7 @@ extension CalculationMethodExtensions on CalculationMethod {
               .withMethodAdjustments(PrayerAdjustments(
                   fajr: 0, sunrise: 0, dhuhr: 1, asr: 0, maghrib: 0, isha: 0));
         }
+      case CalculationMethod.umm_al_qura_ramadhan:
       case CalculationMethod.umm_al_qura:
         {
           return CalculationParameters(

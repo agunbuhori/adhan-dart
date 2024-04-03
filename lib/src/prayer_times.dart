@@ -32,9 +32,6 @@ class PrayerTimes {
   late DateTime _isha;
   DateTime get isha => _isha;
 
-  late DateTime _ishaRamadhan;
-  DateTime get ishaRamadhan => _ishaRamadhan;
-
   // If you give a UTC Offset then Prayer Times will convert local(with device timezone) time
   // to UTC and then add the offset.
   final Duration? utcOffset;
@@ -262,15 +259,21 @@ class PrayerTimes {
         .add(Duration(minutes: calculationParameters.adjustments.maghrib))
         .add(Duration(minutes: calculationParameters.methodAdjustments.maghrib))
         .toLocal());
-    _isha = CalendarUtil.roundedMinute(tempIsha
-        .add(Duration(minutes: calculationParameters.adjustments.isha))
-        .add(Duration(minutes: calculationParameters.methodAdjustments.isha))
-        .toLocal());
-    _ishaRamadhan = CalendarUtil.roundedMinute(tempMaghrib
-        .add(Duration(minutes: calculationParameters.adjustments.maghrib))
-        .add(Duration(minutes: calculationParameters.methodAdjustments.maghrib))
-        .add(Duration(hours: 2))
-        .toLocal());
+
+    if (calculationParameters.method ==
+        CalculationMethod.umm_al_qura_ramadhan) {
+      _isha = CalendarUtil.roundedMinute(tempMaghrib
+          .add(Duration(minutes: calculationParameters.adjustments.maghrib))
+          .add(Duration(
+              minutes: calculationParameters.methodAdjustments.maghrib))
+          .add(Duration(minutes: 120))
+          .toLocal());
+    } else {
+      _isha = CalendarUtil.roundedMinute(tempIsha
+          .add(Duration(minutes: calculationParameters.adjustments.isha))
+          .add(Duration(minutes: calculationParameters.methodAdjustments.isha))
+          .toLocal());
+    }
 
     if (utcOffset != null) {
       _fajr = fajr.toUtc().add(utcOffset!);
@@ -280,7 +283,6 @@ class PrayerTimes {
       _asr = asr.toUtc().add(utcOffset!);
       _maghrib = maghrib.toUtc().add(utcOffset!);
       _isha = isha.toUtc().add(utcOffset!);
-      _ishaRamadhan = ishaRamadhan.toUtc().add(utcOffset!);
     }
   }
 
