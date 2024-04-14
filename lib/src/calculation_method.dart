@@ -130,6 +130,12 @@ extension CalculationMethodExtensions on CalculationMethod {
               fajrAngle: 18.0, ishaInterval: 90, method: this);
         }
       case CalculationMethod.indonesia:
+        {
+          return CalculationParameters(
+                  fajrAngle: 20.0, ishaAngle: 18.0, method: this)
+              .withMethodAdjustments(PrayerAdjustments(
+                  fajr: 2, sunrise: 2, dhuhr: 2, asr: 2, maghrib: 2, isha: 2));
+        }
       case CalculationMethod.malaysia:
       case CalculationMethod.singapore:
         {
