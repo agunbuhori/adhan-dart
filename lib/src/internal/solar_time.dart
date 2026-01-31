@@ -34,57 +34,67 @@ class SolarTime {
     _solar = SolarCoordinates(CalendricalHelper.julianDayByDate(today));
     _nextSolar = SolarCoordinates(CalendricalHelper.julianDayByDate(tomorrow));
 
-    _approximateTransit = Astronomical.approximateTransit(coordinates.longitude,
-        _solar.apparentSiderealTime, _solar.rightAscension);
-    final solarAltitude = -50.0 / 60.0;
+    _approximateTransit = Astronomical.approximateTransit(
+      coordinates.longitude,
+      _solar.apparentSiderealTime,
+      _solar.rightAscension,
+    );
+    // Solar altitude for sunrise/sunset
+    // Standard: -50/60 = -0.833° (accounts for refraction + sun semi-diameter)
+    // Kemenag uses: -1° (slightly more conservative)
+    final solarAltitude = -1.0;
 
     _observer = coordinates;
     _transit = Astronomical.correctedTransit(
-        _approximateTransit,
-        coordinates.longitude,
-        _solar.apparentSiderealTime,
-        _solar.rightAscension,
-        _prevSolar.rightAscension,
-        _nextSolar.rightAscension);
+      _approximateTransit,
+      coordinates.longitude,
+      _solar.apparentSiderealTime,
+      _solar.rightAscension,
+      _prevSolar.rightAscension,
+      _nextSolar.rightAscension,
+    );
     _sunrise = Astronomical.correctedHourAngle(
-        _approximateTransit,
-        solarAltitude,
-        coordinates,
-        false,
-        _solar.apparentSiderealTime,
-        _solar.rightAscension,
-        _prevSolar.rightAscension,
-        _nextSolar.rightAscension,
-        _solar.declination,
-        _prevSolar.declination,
-        _nextSolar.declination);
+      _approximateTransit,
+      solarAltitude,
+      coordinates,
+      false,
+      _solar.apparentSiderealTime,
+      _solar.rightAscension,
+      _prevSolar.rightAscension,
+      _nextSolar.rightAscension,
+      _solar.declination,
+      _prevSolar.declination,
+      _nextSolar.declination,
+    );
     _sunset = Astronomical.correctedHourAngle(
-        _approximateTransit,
-        solarAltitude,
-        coordinates,
-        true,
-        _solar.apparentSiderealTime,
-        _solar.rightAscension,
-        _prevSolar.rightAscension,
-        _nextSolar.rightAscension,
-        _solar.declination,
-        _prevSolar.declination,
-        _nextSolar.declination);
+      _approximateTransit,
+      solarAltitude,
+      coordinates,
+      true,
+      _solar.apparentSiderealTime,
+      _solar.rightAscension,
+      _prevSolar.rightAscension,
+      _nextSolar.rightAscension,
+      _solar.declination,
+      _prevSolar.declination,
+      _nextSolar.declination,
+    );
   }
 
   double hourAngle(double angle, bool afterTransit) {
     return Astronomical.correctedHourAngle(
-        _approximateTransit,
-        angle,
-        _observer,
-        afterTransit,
-        _solar.apparentSiderealTime,
-        _solar.rightAscension,
-        _prevSolar.rightAscension,
-        _nextSolar.rightAscension,
-        _solar.declination,
-        _prevSolar.declination,
-        _nextSolar.declination);
+      _approximateTransit,
+      angle,
+      _observer,
+      afterTransit,
+      _solar.apparentSiderealTime,
+      _solar.rightAscension,
+      _prevSolar.rightAscension,
+      _nextSolar.rightAscension,
+      _solar.declination,
+      _prevSolar.declination,
+      _nextSolar.declination,
+    );
   }
 
   // hours from transit
